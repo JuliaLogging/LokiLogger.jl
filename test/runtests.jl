@@ -8,7 +8,7 @@ function fivexx(http, c=500)
     HTTP.startwrite(http)
     HTTP.close(http.stream)
 end
-const server = Sockets.listen(Sockets.InetAddr("0.0.0.0", 9100))
+const server = Sockets.listen(Sockets.InetAddr(Sockets.ip"0.0.0.0", 9100))
 tsk = @async HTTP.listen("0.0.0.0", 9100; server=server) do http
     if http.message.method != "POST"
         return fivexx(http)

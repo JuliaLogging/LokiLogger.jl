@@ -14,6 +14,7 @@ HTTP = "0.8,0.9"
 JSON3 = "1"
 StructTypes = "1"
 URIs = "1"
+julia = "1"
 
 [extras]
 Sockets = "6462fe0b-24de-5631-8697-dd941f90decc"
