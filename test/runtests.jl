@@ -40,6 +40,7 @@ const starttime = time() * 1e9
     logger = LokiLogger.Logger(lokiserver)
     Logging.with_logger(logger) do
         @info "hello, world"
+        @error "hello, world" error("hello, error")
     end
     json = take!(ch)
     @test keys(json) == Set([:streams])
@@ -54,6 +55,10 @@ const starttime = time() * 1e9
     @test starttime < parse(Int, values[1][1]) < time() * 1e9
     msg = values[1][2]
     @test occursin("level=info msg=\"hello, world\" module=", msg)
+    # Error capturing
+    json = take!(ch)
+    msg = json.streams[1].values[1][2]
+    @test occursin("level=error msg=\"Exception while generating log record in module", msg)
     # JSON format
     logger = LokiLogger.Logger(LokiLogger.json, lokiserver; labels=Dict("region" => "eu-central"))
     Logging.with_logger(logger) do
