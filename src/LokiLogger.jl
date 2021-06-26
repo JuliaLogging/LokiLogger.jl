@@ -23,7 +23,7 @@ and `args::NamedTuple` that contains all the logger arguments, see
 help for `LoggingExtras.handle_message_args` for details.
 
 ## Examples
-```
+```julia
 # Create a logger with a single label and default (logfmt) formatting
 logger = LokiLogger.Logger("http://localhost:3100"; labels = Dict("app" => "myapp"))
 
@@ -84,6 +84,11 @@ lvlstr(lvl::Logging.LogLevel) = lvl >= Logging.Error ? "error" :
 
 Format the log message in [`logfmt`](https://brandur.org/logfmt) key-value format
 and print to `io`.
+
+Example logline:
+```
+level=info msg="hello, world" module=Main file="/run.jl" line=2 group=run id=Main_6972c827
+```
 """
 function logfmt(io::IO, args)
     # TODO: Handle kwargs...
@@ -129,6 +134,11 @@ StructTypes.names(::Type{LogMessage}) = ((:_module, :module),)
     json(io::IO, args)
 
 Format the log message as JSON and write to `io`.
+
+Example logline:
+```
+{"level":"info","msg":"hello, world","module":"Main","file":"/run.jl","line":2,"group":"run","id":"Main_6972c827"}
+```
 """
 function json(io::IO, args)
     logmsg = LogMessage(args)
